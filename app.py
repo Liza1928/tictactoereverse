@@ -458,9 +458,13 @@ def play_game():
   </body>
 </html>
 '''
+        msg = ''
         ttt = TicTacToe3b([AI_Player(ai_tup), AI_Player(ai_algo)])
+        resp = make_response(render_template_string(TEXT, ttt=ttt, msg=msg))
+        c = ",".join(map(str, ttt.board))
+        resp.set_cookie("game_board", c)
         game_cookie = request.cookies.get('game_board')
-        if game_cookie:
+        if game_cookie and len(ttt.board)==len(game_cookie.split(",")):
             ttt.board = [int(x) for x in game_cookie.split(",")]
         if "lala" in request.form:
             #ttt.play_move(request.form["choice"])
@@ -478,6 +482,7 @@ def play_game():
                 #time.sleep(2)
         if "reset" in request.form:
             ttt.board = [0 for i in range(9)]
+            resp.set_cookie('game_board', '', expires=0)
         if ttt.is_over():
             msg = ttt.winner()
         else:
@@ -491,6 +496,7 @@ def play_game():
 
 @app.route("/human3/", methods=['GET', 'POST'])
 def play_game2():
+
     TEXT = '''
 <!doctype html>
 <html>
@@ -517,12 +523,16 @@ def play_game2():
     </form>
   </body>
 </html>
-'''   
+'''
+    msg = ''
     ttt = TicTacToe3h([Human_Player(), AI_Player(ai_algo)])
+    resp = make_response(render_template_string(TEXT, ttt=ttt, msg=msg))
+    c = ",".join(map(str, ttt.board))
+    resp.set_cookie("game_board", c)
     while not(ttt.is_over()):
         #ttt = TicTacToe([AI_Player(ai_algo), AI_Player(ai_tup)])
         game_cookie = request.cookies.get('game_board')
-        if game_cookie:
+        if game_cookie and len(ttt.board)==len(game_cookie.split(",")):
             ttt.board = [int(x) for x in game_cookie.split(",")]
         if "choice" in request.form:
             ttt.play_move(request.form["choice"])
@@ -537,6 +547,7 @@ def play_game2():
                 #ttt.play_move(request.form["choice"])
                 #ttt.play_move(ai_move)
         if "reset" in request.form:
+            resp.set_cookie('game_board', '', expires=0)
             ttt.board = [0 for i in range(9)]
         if ttt.is_over():
             msg = ttt.winner()
@@ -576,11 +587,15 @@ def play_game3():
   </body>
 </html>
 '''
+    msg = ''
     ttt = TicTacToe53h([ Human_Player(), AI_Player(ai_algo)])
+    resp = make_response(render_template_string(TEXT, ttt=ttt, msg=msg))
+    c = ",".join(map(str, ttt.board))
+    resp.set_cookie("game_board", c)
     while not(ttt.is_over()):
         #ttt = TicTacToe([AI_Player(ai_tup), AI_Player(ai_algo)])
         game_cookie = request.cookies.get('game_board')
-        if game_cookie:
+        if game_cookie and len(ttt.board)==len(game_cookie.split(",")):
             ttt.board = [int(x) for x in game_cookie.split(",")]
         if "choice" in request.form:
             ttt.play_move(request.form["choice"])
@@ -596,6 +611,7 @@ def play_game3():
                 #ttt.play_move(ai_move)
         if "reset" in request.form:
             ttt.board = [0 for i in range(25)]
+            resp.set_cookie('game_board', '', expires=0)
         if ttt.is_over():
             msg = ttt.winner()
         else:
@@ -606,6 +622,7 @@ def play_game3():
         return resp
 @app.route("/bot53/", methods=['GET', 'POST'])
 def play_game4():
+
         TEXT = '''
     <!doctype html>
     <html>
@@ -634,9 +651,13 @@ def play_game4():
       </body>
     </html>
     '''
+        msg = ''
         ttt = TicTacToe53b([AI_Player(ai_tup), AI_Player(ai_algo)])
+        resp = make_response(render_template_string(TEXT, ttt=ttt, msg=msg))
+        c = ",".join(map(str, ttt.board))
+        resp.set_cookie("game_board", c)
         game_cookie = request.cookies.get('game_board')
-        if game_cookie:
+        if game_cookie and len(ttt.board)==len(game_cookie.split(",")):
             ttt.board = [int(x) for x in game_cookie.split(",")]
         if "lala" in request.form:
             #ttt.play_move(request.form["choice"])
@@ -654,6 +675,7 @@ def play_game4():
                 #time.sleep(2)
         if "reset" in request.form:
             ttt.board = [0 for i in range(25)]
+            resp.set_cookie('game_board', '', expires=0)
         if ttt.is_over():
             msg = ttt.winner()
         else:
@@ -664,11 +686,42 @@ def play_game4():
         return resp    
 @app.route("/human5/", methods=['GET', 'POST'])
 def play_game5():
+    TEXT = '''
+<!doctype html>
+<html>
+  <head><title>Tic Tac Toe</title></head>
+  <body>
+    <h1>Tic Tac Toe</h1>
+    <h2>{{msg}}</h2>
+    <form action="" method="POST">
+      <table>
+        {% for j in range(4, -1, -1) %}
+        <tr>
+          {% for i in range(0, 5) %}
+          <td>
+            <button  style="height:40px;width:40px" type="submit" name="choice" value="{{j*5+i+1}}"
+             {{"disabled" if ttt.spot_string(i, j)!="_"}}>
+              {{ttt.spot_string(i, j)}}
+            </button>
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+      <button type="submit" name="reset">Start Over</button>
+    </form>
+  </body>
+</html>
+'''
+    msg = ''
     ttt = TicTacToe5h([ Human_Player(), AI_Player(ai_algo)])
+    resp = make_response(render_template_string(TEXT, ttt=ttt, msg=msg))
+    c = ",".join(map(str, ttt.board))
+    resp.set_cookie("game_board", c)
     while not(ttt.is_over()):
         #ttt = TicTacToe([AI_Player(ai_tup), AI_Player(ai_algo)])
         game_cookie = request.cookies.get('game_board')
-        if game_cookie:
+        if game_cookie and len(ttt.board)==len(game_cookie.split(",")):
             ttt.board = [int(x) for x in game_cookie.split(",")]
         if "choice" in request.form:
             ttt.play_move(request.form["choice"])
@@ -684,6 +737,7 @@ def play_game5():
                 #ttt.play_move(ai_move)
         if "reset" in request.form:
             ttt.board = [0 for i in range(25)]
+            resp.set_cookie('game_board', '', expires=0)
         if ttt.is_over():
             msg = ttt.winner()
         else:
@@ -695,9 +749,42 @@ def play_game5():
 
 @app.route("/bot5/", methods=['GET', 'POST'])
 def play_game6():
+        TEXT = '''
+<!doctype html>
+<html>
+  <head><title>Tic Tac Toe</title></head>
+  <body>
+    <h1>Tic Tac Toe</h1>
+    <h2>{{msg}}</h2>
+    <form action="" method="POST">
+      <table>
+        {% for j in range(4, -1, -1) %}
+        <tr>
+          {% for i in range(0, 5) %}
+          <td>
+            <button style="height:40px;width:40px" type="submit" name="choice" value="{{j*5+i+1}}"
+             {{"disabled" if ttt.spot_string(i, j)!="_"}}>
+              {{ttt.spot_string(i, j)}}
+            </button>
+          </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+      <button type="submit" name="reset">Start Over</button>
+      <button style="height:20px;width:100px" type="submit" name = "lala">Сделать ход</button>
+    </form>
+  </body>
+</html>
+'''
         ttt = TicTacToe5b([AI_Player(ai_tup), AI_Player(ai_algo)])
+        msg = ''
+        resp = make_response(render_template_string(TEXT, ttt=ttt, msg=msg))
+        c = ",".join(map(str, ttt.board))
+        resp.set_cookie("game_board", c)
+        
         game_cookie = request.cookies.get('game_board')
-        if game_cookie:
+        if game_cookie and len(ttt.board)==len(game_cookie.split(",")):
             ttt.board = [int(x) for x in game_cookie.split(",")]
         if "lala" in request.form:
             #ttt.play_move(request.form["choice"])
@@ -714,6 +801,7 @@ def play_game6():
                 ttt.play_move(ai_move)
                 #time.sleep(2)
         if "reset" in request.form:
+            resp.set_cookie('game_board', '', expires=0)
             ttt.board = [0 for i in range(25)]
         if ttt.is_over():
             msg = ttt.winner()
