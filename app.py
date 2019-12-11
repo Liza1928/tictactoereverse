@@ -113,8 +113,7 @@ app = Flask(__name__)
 ai_algo = Negamax(6)
 ai_tup = Negamax(6)
 
-
-@app.route("/getmsg/", methods=['GET','POST'])
+@app.route('/getmsg/', methods=['GET','POST'])
 def play_game():
         ttt = TicTacToe([AI_Player(ai_tup), AI_Player(ai_algo)])
         game_cookie = request.cookies.get('game_board')
