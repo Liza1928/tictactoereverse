@@ -269,13 +269,25 @@ class TicTacToe53b(TwoPlayersGame):
         return ["_", "O", "X"][self.board[5 * j + i]]
 
     def scoring(self):
-        opp_won = self.lose(who=self.nplayer)
-        i_won = self.lose()
-        if opp_won and not i_won:
-            return -100
-        if i_won and not opp_won:
-            return 1000
-        return 0
+            #if self.nplayer = 1:
+            #print('ddd')
+            #print(self.nplayer)
+            if self.nplayer == 1:
+                opp_won = self.lose(2)
+                i_won = self.lose(1)
+                if opp_won and not i_won:
+                    return 100
+                if i_won and not opp_won:
+                    return -100
+                return 0
+            elif self.nplayer == 2:
+                opp_won = self.lose(1)
+                i_won = self.lose(2)
+                if opp_won and not i_won:
+                    return 100
+                if i_won and not opp_won:
+                    return -100
+                return 0
 
     def winner(self):
         if self.lose(who=1):
@@ -425,8 +437,8 @@ class TicTacToe5b(TwoPlayersGame):
 
 
 app = Flask(__name__)
-ai_algo = Negamax(6)
-ai_tup = Negamax(6)
+ai_algo = Negamax(5)
+ai_tup = Negamax(5)
 
 @app.route('/bot3/', methods=['GET','POST'])
 def play_game():
