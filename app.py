@@ -53,29 +53,30 @@ class TicTacToe3b(TwoPlayersGame):
     def spot_string(self, i, j):
         return ["_", "O", "X"][self.board[3 * j + i]]
 
+
     def scoring(self):
-        #if self.nplayer = 1:
-        #print('ddd')
-        #print(self.nplayer)
-        if self.nplayer == 1:
-            opp_won = self.lose(1)
-            i_won = self.lose(2)
-            if opp_won and not i_won:
-                return 100
-            if i_won and not opp_won:
-                return -100
-            return 0
-        elif self.nplayer == 2:
-            opp_won = self.lose(2)
-            i_won = self.lose(1)
-            if opp_won and not i_won:
-                return 100
-            if i_won and not opp_won:
-                return -100
-            return 0
+            #if self.nplayer = 1:
+            #print('ddd')
+            #print(self.nplayer)
+            if self.nplayer == 1:
+                opp_won = self.lose(1)
+                i_won = self.lose(2)
+                if opp_won and not i_won:
+                    return 100
+                elif i_won and not opp_won:
+                    return -100
+                return 0
+            elif self.nplayer == 2:
+                opp_won = self.lose(2)
+                i_won = self.lose(1)
+                if opp_won and not i_won:
+                    return 100
+                elif i_won and not opp_won:
+                    return -100
+                return 0
 
     def winner(self):
-        if self.lose(who=2):
+        if self.lose(who=2) or self.lose(who=1):
             return "AI Wins"
         return "Tie"
 
@@ -202,12 +203,12 @@ class TicTacToe53h(TwoPlayersGame):
         return ["_", "O", "X"][self.board[5 * j + i]]
 
     def scoring(self):
-        opp_won = self.lose(2)
-        i_won = self.lose(1)
+        opp_won = self.lose(1)
+        i_won = self.lose(2)
         if opp_won and not i_won:
-            return -100
+            return 100
         if i_won and not opp_won:
-            return 1000
+            return -100
         return 0
 
     def winner(self):
@@ -353,7 +354,7 @@ class TicTacToe5h(TwoPlayersGame):
             if opp_won and not i_won:
                 return -100
             if i_won and not opp_won:
-                return 1000
+                return 100
             return 0
         #else:
             #opp_won = self.lose(1)
@@ -421,13 +422,25 @@ class TicTacToe5b(TwoPlayersGame):
         return ["_", "O", "X"][self.board[5 * j + i]]
 
     def scoring(self):
-            opp_won = self.lose(who=self.nplayer)
-            i_won = self.lose()
-            if opp_won and not i_won:
-                return 1000
-            if i_won and not opp_won:
-                return -100
-            return 0
+            #if self.nplayer = 1:
+            #print('ddd')
+            #print(self.nplayer)
+            if self.nplayer == 1:
+                opp_won = self.lose(2)
+                i_won = self.lose(1)
+                if opp_won and not i_won:
+                    return -100
+                if i_won and not opp_won:
+                    return 100
+                return 0
+            elif self.nplayer == 2:
+                opp_won = self.lose(1)
+                i_won = self.lose(2)
+                if opp_won and not i_won:
+                    return -100
+                if i_won and not opp_won:
+                    return 100
+                return 0
 
     def winner(self):
         if self.lose(who=2) or self.lose(who=1):
@@ -437,11 +450,12 @@ class TicTacToe5b(TwoPlayersGame):
 
 
 app = Flask(__name__)
-ai_algo = Negamax(5)
-ai_tup = Negamax(5)
+
 
 @app.route('/bot3/', methods=['GET','POST'])
 def play_game():
+        ai_algo = Negamax(6)
+        ai_tup = Negamax(6)
         TEXT = '''
 <!doctype html>
 <html>
@@ -508,7 +522,7 @@ def play_game():
 
 @app.route("/human3/", methods=['GET', 'POST'])
 def play_game2():
-
+    ai_algo = Negamax(6)
     TEXT = '''
 <!doctype html>
 <html>
@@ -572,6 +586,7 @@ def play_game2():
     
 @app.route("/human53/", methods=['GET', 'POST'])
 def play_game3():
+    ai_algo = Negamax(5)
     TEXT = '''
 <!doctype html>
 <html>
@@ -634,7 +649,8 @@ def play_game3():
         return resp
 @app.route("/bot53/", methods=['GET', 'POST'])
 def play_game4():
-
+        ai_algo = Negamax(4)
+        ai_tup = Negamax(4)
         TEXT = '''
     <!doctype html>
     <html>
@@ -698,6 +714,7 @@ def play_game4():
         return resp    
 @app.route("/human5/", methods=['GET', 'POST'])
 def play_game5():
+    ai_algo = Negamax(4)
     TEXT = '''
 <!doctype html>
 <html>
@@ -761,6 +778,8 @@ def play_game5():
 
 @app.route("/bot5/", methods=['GET', 'POST'])
 def play_game6():
+        ai_algo = Negamax(3)
+        ai_tup = Negamax(3)
         TEXT = '''
 <!doctype html>
 <html>
